@@ -140,18 +140,20 @@ const getProductByAsin = async (asinId) => {
 
 
 //Open search Catalog
-const opensearchResult = async (searchword) => {
+const opensearchResult = async (searchword, businessName) => {
  
     const result = await  openSearchConnect.search({
     
-        index: "testbusiness_catalog",
+        index: `${businessName}_catalog`,
         q: searchword
         
      }) 
 
-     console.log(JSON.stringify(result))
+     //console.log(JSON.stringify(result))
 
     const openSearchResult = result?.body?.hits?.hits
+
+      //console.log(JSON.stringify(openSearchResult))
 
      if (openSearchResult.length <= 0) {
         const jsonataResult = []
@@ -160,6 +162,7 @@ const opensearchResult = async (searchword) => {
     
      else {
         const jsonataResult = await convertData(openSearchResult)
+        //console.log(JSON.stringify(jsonataResult))
         return jsonataResult
      }
 

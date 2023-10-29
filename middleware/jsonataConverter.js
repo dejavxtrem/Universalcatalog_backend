@@ -6,15 +6,15 @@ try {
     
     const expression = jsonata(
       `$.{
-        "Supplier": _source.body."\ufeffSupplierName",
-       "productName": _source.body.Name,
-       "SupplierPartNum": _source.body."SupplierPartNum",
-       "ProductDescription": _source.body.Description,
-        "Price": _source.body.Price,
-        "Currency": _source.body.Currency,
-        "UOMcode": _source.body."UOM code",
-        "Image": _source.body."Image Url",
-        "Active": _source.body.active
+        "Supplier": _source."\ufeffSupplierName",
+       "productName": _source.Name,
+       "SupplierPartNum": _source."SupplierPartNum",
+       "ProductDescription": _source.Description,
+        "Price": _source.Price,
+        "Currency": _source.Currency,
+        "UOMcode": _source."UOM code",
+        "Image": _source."Image Url",
+        "Active": _source.active
     }`
     )
      

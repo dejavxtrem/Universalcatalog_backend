@@ -16,6 +16,9 @@ const getProducts = asyncHandler(async (req, res) => {
     //const page = req.query.page
     const page = 10
 
+    //console.log(req.user)
+    const businessName = req.user.businessName
+
      if (!searchWord|| !page) {
         res.status(400)
         throw new Error('Invalid parameter')
@@ -35,21 +38,27 @@ const getProducts = asyncHandler(async (req, res) => {
     const convertedResult = await convertProductSearch(data)
 
     //opensearch query search
-    const result = await opensearchResult(searchWord)
+    const result = await opensearchResult(searchWord, businessName)
 
-    if (typeof(result) === "object") {
-        const mergedResult = [...convertedResult, result]
-        res.status(200).json(mergedResult)
-    } else  {
+    // if (typeof(result) === "object") {
+    //     const mergedResult = [...convertedResult, result]
+    //     res.status(200).json(mergedResult)
+    // } else  {
 
-    const mergedResult = [...convertedResult, ...result] 
-     //console.log(JSON.stringify(mergedResult))
-    res.status(200).json(mergedResult)
-    }
-    //console.log(JSON.stringify(result))
-    //  const mergedResult = [...convertedResult, ...result] || [...convertedResult, result]
+    // const mergedResult = convertedResult.concat(result)
+
     //  console.log(JSON.stringify(mergedResult))
+
     // res.status(200).json(mergedResult)
+    // }
+
+    console.log(JSON.stringify(convertedResult))
+
+     const mergedResult = convertedResult.concat(result)
+
+     console.log(JSON.stringify(mergedResult))
+
+    res.status(200).json(mergedResult)
 })
 
 
