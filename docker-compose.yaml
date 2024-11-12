@@ -1,0 +1,24 @@
+services:
+   catalog_backend:
+      restart: always
+      build:
+         context: .
+      ports:
+         - 5000:5000
+      environment:
+         - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+         - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+         - REGION=${REGION}
+         - USER_TABLE=${USER_TABLE}
+         - CATALOG_UPLOAD_S3_BUCKET=${CATALOG_UPLOAD_S3_BUCKET}
+         - SIGNED_URL_EXPIRATION=60
+         - SECRET=${SECRET}
+         - MONGO_URI=${MONGO_URI}
+         - NODE_ENV=${NODE_ENV}
+         - CLIENT_ID=${CLIENT_ID}
+         - CLIENT_SECRET=${CLIENT_SECRET}
+         - REFRESH_TOKEN=${REFRESH_TOKEN}
+         - CATALOG_ENDPOINT=${CATALOG_ENDPOINT}
+      volumes:
+         - /usr/src/app/node_modules
+         - /usr/src/app

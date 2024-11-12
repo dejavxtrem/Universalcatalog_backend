@@ -22,8 +22,6 @@ import { v4 as uuidv4 } from 'uuid';
 //     }
 //   };
 
-
-
 const marshallOptions = {
    convertEmptyValues: false, // false, by default.
    removeUndefinedValues: true, // false, by default.
@@ -61,15 +59,16 @@ async function createUserAccount(userInfo) {
             password: userInfo.password,
             businessName: userInfo.businessName,
          },
-         ConditionExpression:
-         `attribute_not_exists(userInfo.userId) OR attribute_not_exists(userInfo.email)`,
+         ConditionExpression: `attribute_not_exists(userInfo.userId) OR attribute_not_exists(userInfo.email)`,
       };
-     
+
       const command = new PutCommand(params);
-      
+
       const response = await ddbDocClient.send(command);
 
-      console.log( console.log( 'This is the error type' + JSON.stringify(response)));
+      console.log(
+         console.log('This is the error type' + JSON.stringify(response)),
+      );
 
       return response;
    } catch (error) {
@@ -77,45 +76,40 @@ async function createUserAccount(userInfo) {
    }
 }
 
-
 async function getItemDetails(userInfo) {
-    console.log(userInfo.email)
+   console.log(userInfo.email);
 
-    const command = new GetCommand({
-        TableName: userTable,
-        Key: {
-            userID: userInfo.userId,
-            emailID: userInfo.email 
-        },
-        "ProjectionExpression":  "emailID"
-    })
-    const getResponse = await ddbDocClient.send(command);
-    console.log(`Got the movie: ${JSON.stringify(getResponse)}`);
-    return getResponse.Item
+   const command = new GetCommand({
+      TableName: userTable,
+      Key: {
+         userID: userInfo.userId,
+         emailID: userInfo.email,
+      },
+      ProjectionExpression: 'emailID',
+   });
+   const getResponse = await ddbDocClient.send(command);
+   console.log(`Got the movie: ${JSON.stringify(getResponse)}`);
+   return getResponse.Item;
 }
 
+async function getAccountDetailsById(userId) {
+   const userIdString = { S: userId };
+   const emailID = { S: 'johndoe@doe.com' };
+   const input = {
+      TableName: userTable,
+      KeyConditionExpression: 'emailID = :emailID AND userIdString = :userID',
 
+      ExpressionAttributeValues: {
+         ':userID': userIdString,
+         ':emailID': emailID,
+      },
+      ConsistentRead: true,
+   };
 
-
-async function getAccountDetailsById (userId) {
-   const userIdString = { S: userId}
-    const emailID = { S: "johndoe@doe.com"}
-    const input = {
-        TableName: userTable,
-        KeyConditionExpression:
-           "emailID = :emailID AND userIdString = :userID",
-           
-        ExpressionAttributeValues: {
-            ":userID": userIdString,
-            ":emailID": emailID
-        },
-        ConsistentRead: true,
-     };
-
-     const result = new QueryCommand(input);
-     console.log(JSON.stringify(result))
-     const { Item } = await ddbDocClient.send(result);
-     return Item;
+   const result = new QueryCommand(input);
+   console.log(JSON.stringify(result));
+   const { Item } = await ddbDocClient.send(result);
+   return Item;
 }
 
 export { createUserAccount, getItemDetails, getAccountDetailsById };
