@@ -71,7 +71,7 @@ const placeOrderFunction =  async (payload) => {
                 userReference: {
                    userReferenceType: "UserEmail",
        
-                   emailAddress: "dejavuxtrem@gmail.com"
+                   emailAddress: process.env.AMAZON_GROUPEMAIL
                 }
              },
              {
@@ -101,7 +101,7 @@ const placeOrderFunction =  async (payload) => {
                 address: {
                    addressType: "PhysicalAddress",
        
-                   fullName: "Adedeji odujoko",
+                   fullName: "John Doe",
        
                    phoneNumber: "8167854438",
        
